@@ -27,6 +27,22 @@ provider:
     TODOS_TABLE: kingToDo-table-serverless-${self:provider.stage}
     S3_BUCKET_NAME: kingtodo-bucket-serverless-${self:provider.stage}
 
+  logs:
+    # Enabling API Gateway logs
+    restApi:
+      accessLogging: true
+      level: INFO
+      fullExecutionData: true
+
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - xray:PutTelemetryRecords
+            - xray:PutTraceSegments
+          Resource: "*"
+
 custom:
   documentation:
     api:
@@ -62,19 +78,6 @@ custom:
               type: string
             done:
               type: boolean
-
-  #logs:
-  # Enable API Gateway logs
-  # restApi: true
-
-  #iam:
-  # role:
-  #  statements:
-  #   - Effect: Allow
-  #     Action:
-  #       - xray:PutTelemetryRecords
-  #       - xray:PutTraceSegments
-  #     Resource: "*"
 
 functions:
   Auth:
